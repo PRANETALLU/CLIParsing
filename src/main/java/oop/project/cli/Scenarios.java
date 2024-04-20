@@ -76,7 +76,7 @@ public class Scenarios {
             return Map.of("number", number);
         }
         else {
-            throw new IllegalArgumentException("The number passed in is negative"); 
+            throw new IllegalArgumentException("The number passed in is negative");
         }
     }
 
@@ -89,7 +89,13 @@ public class Scenarios {
     static Map<String, Object> calc(String arguments) {
         //TODO: Parse arguments and extract values.
         String subcommand = "";
-        return Map.of("subcommand", subcommand);
+        if(arguments.equals("add") || arguments.equals("div") || arguments.equals("sqrt") || arguments.equals("sub")) {
+            subcommand = arguments;
+            return Map.of("subcommand", subcommand);
+        }
+        else {
+            throw new IllegalArgumentException("Not any of the functions");
+        }
     }
 
     /**
