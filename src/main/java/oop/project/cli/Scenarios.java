@@ -107,7 +107,7 @@ public class Scenarios {
      */
     static Map<String, Object> date(String arguments) {
         //TODO: Parse arguments and extract values.
-        LocalDate date = LocalDate.EPOCH;
+        LocalDate date = LocalDate.parse(arguments);
         return Map.of("date", date);
     }
 
