@@ -40,7 +40,15 @@ public class Scenarios {
         //TODO: Parse arguments and extract values.
         int left = 0; //or BigInteger, etc.
         int right = 0;
-        return Map.of("left", left, "right", right);
+        String[] elements = arguments.split(" ");
+        if(elements.length == 2) {
+            left = Integer.parseInt(elements[0]);
+            right = Integer.parseInt(elements[1]);
+            return Map.of("left", left, "right", right);
+        }
+        else {
+            throw new IllegalArgumentException("Need two arguments");
+        }
     }
 
     /**
@@ -63,8 +71,13 @@ public class Scenarios {
      */
     static Map<String, Object> sqrt(String arguments) {
         //TODO: Parse arguments and extract values.
-        int number = 0;
-        return Map.of("number", number);
+        int number = Integer.parseInt(arguments);
+        if(number >= 0) {
+            return Map.of("number", number);
+        }
+        else {
+            throw new IllegalArgumentException("The number passed in is negative"); 
+        }
     }
 
     /**
