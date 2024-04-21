@@ -60,8 +60,45 @@ public class Scenarios {
      */
     static Map<String, Object> sub(String arguments) {
         //TODO: Parse arguments and extract values.
+        if (arguments == null || arguments.trim().isEmpty()) {
+            throw new IllegalArgumentException("Arguments cannot be null or empty");
+        }
+
         Optional<Double> left = Optional.empty();
         double right = 0.0;
+        boolean rightSet = false;
+
+        String[] elements = arguments.trim().split(" ");
+        int i = 0;
+        while (i < elements.length) {
+            if (elements[i].equals("--left") && i + 1 < elements.length) {
+                try {
+                    left = Optional.of(Double.parseDouble(elements[i + 1]));
+                    i += 2;
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Left value is not a number");
+                }
+            } else if (elements[i].equals("--right") && i + 1 < elements.length) {
+                try {
+                    right = Double.parseDouble(elements[i + 1]);
+                    rightSet = true;
+                    i += 2;
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Right value is not a number");
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid argument or missing value: " + elements[i]);
+            }
+        }
+
+        if (!rightSet) {
+            throw new IllegalArgumentException("Right operand is required but not provided");
+        }
+
+        if(!left.isEmpty()) {
+            return Map.of("left", left.orElse(null), "right", right);
+        }
+
         return Map.of("left", left, "right", right);
     }
 
