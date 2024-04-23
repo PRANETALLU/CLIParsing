@@ -1,23 +1,21 @@
 package oop.project.cli;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Optional;
 
 public class Scenarios {
 
     /**
-     * Parses and returns the arguments of a command (one of the scenarios
-     * below) into a Map of names to values. This method is provided as a
-     * starting point that works for most groups, but depending on your command
-     * structure and requirements you may need to make changes to adapt it to
-     * your needs - use whatever is convenient for your design.
+     * Parses the arguments of a command and calls on the required method. This method is designed to allow for addition, subtraction,
+     * square root calculation, command calculation. Commands are expected in Unix form
+     *
+     * @param command The full command line input to be parsed, excluding null or empty.
+     * @return A {@code Map<String, Object>} with the parsed arguments and their respective values.
+     * @throws IllegalArgumentException if the command is unknown or improperly formatted.
      */
     public static Map<String, Object> parse(String command) {
-        //This assumes commands follow a similar structure to unix commands,
-        //e.g. `command [arguments...]`. If your project uses a different
-        //structure, e.g. Lisp syntax like `(command [arguments...])`, you may
-        //need to adjust this a bit to work as expected.
         var split = command.split(" ", 2);
         var base = split[0];
         var arguments = split.length == 2 ? split[1] : "";
@@ -32,12 +30,16 @@ public class Scenarios {
     }
 
     /**
-     * Takes two positional arguments:
+     * Designed to handle the add command. Command requires two space seperated int arguments
+     * and then adds them together.
      *  - {@code left: <your integer type>}
      *  - {@code right: <your integer type>}
+     *  @param arguments two ints space seperated in string form.
+     *  @return A {@code Map<String, Object>} with keys "left" and "right" representing the operands,
+     *    and their sum under the key "result".
+     *  @throws IllegalArgumentException if parse fails or incorrect amount of args.
      */
     private static Map<String, Object> add(String arguments) {
-        //TODO: Parse arguments and extract values.
         int left = 0; //or BigInteger, etc.
         int right = 0;
         String[] elements = arguments.split(" ");
@@ -52,14 +54,14 @@ public class Scenarios {
     }
 
     /**
-     * Takes two <em>named</em> arguments:
-     *  - {@code left: <your decimal type>} (optional)
-     *     - If your project supports default arguments, you could also parse
-     *       this as a non-optional decimal value using a default of 0.0.
-     *  - {@code right: <your decimal type>} (required)
+     * Designed to handle the sub command. Command takes alteast and atmost two arguments. If only given
+     * one, the left defaults to 0.0.
+     * @param arguments A string with named arguments "--left" and "--right" with their values.
+     * @return A {@code Map<String, Object>} with keys "left" and "right" and their values.
+     *         If "left" is not specified, it's not included in the map.
+     * @throws IllegalArgumentException if atleast one argument is not provided or parsing fails due to invalid input.
      */
     static Map<String, Object> sub(String arguments) {
-        //TODO: Parse arguments and extract values.
         if (arguments == null || arguments.trim().isEmpty()) {
             throw new IllegalArgumentException("Arguments cannot be null or empty");
         }
@@ -103,11 +105,14 @@ public class Scenarios {
     }
 
     /**
-     * Takes one positional argument:
-     *  - {@code number: <your integer type>} where {@code number >= 0}
+     * This method is designed to handle the sqrt command. Command takes in a singular non-negative integer to be used as the radicand and takes it square root.
+     * @param arguments Non-negative int as a string to be used as radicand.
+     * @return A {@code Map<String, Object>} with a key "number" associated with the input number
+     *  and "result" for the square root value.
+     * @throws IllegalArgumentException if arg string contains negative int or is not int.
+     *
      */
     static Map<String, Object> sqrt(String arguments) {
-        //TODO: Parse arguments and extract values.
         int number = Integer.parseInt(arguments);
         if(number >= 0) {
             return Map.of("number", number);
@@ -118,13 +123,12 @@ public class Scenarios {
     }
 
     /**
-     * Takes one positional argument:
-     *  - {@code subcommand: "add" | "div" | "sqrt" }, aka one of these values.
-     *     - Note: Not all projects support subcommands, but if yours does you
-     *       may want to take advantage of this scenario for that.
+     * This method handles the calc command. Takes in subcommands/ nested commands to be used for more calculations.
+     * @param arguments A string containing a supported subcommand
+     * @return A {@code Map<String, Object>} with the key "subcommand" associated with the recognized operation.
+     * @throws IllegalArgumentException if arg contains any subcommand not recognized/supported.
      */
     static Map<String, Object> calc(String arguments) {
-        //TODO: Parse arguments and extract values.
         String subcommand = "";
         if(arguments.equals("add") || arguments.equals("div") || arguments.equals("sqrt") || arguments.equals("sub")) {
             subcommand = arguments;
@@ -136,21 +140,17 @@ public class Scenarios {
     }
 
     /**
-     * Takes one positional argument:
-     *  - {@code date: Date}, a custom type representing a {@code LocalDate}
-     *    object (say at least yyyy-mm-dd, or whatever you prefer).
-     *     - Note: Consider this a type that CANNOT be supported by your library
-     *       out of the box and requires a custom type to be defined.
+     * The method designed to handle the data metod, takes in a string in date format to return a {@code LocalDate} object. The input string should
+     * be in the 'yyyy-mm-dd' format.
+     *
+     * @param arguments A string representing a date in 'yyyy-mm-dd' format.
+     * @return A {@code Map<String, Object>} with a key "date" associated with the parsed {@code LocalDate}.
+     * @throws DateTimeParseException if the formating of the date string is wrong.
      */
     static Map<String, Object> date(String arguments) {
-        //TODO: Parse arguments and extract values.
         LocalDate date = LocalDate.parse(arguments);
         return Map.of("date", date);
     }
 
-    //TODO: Add your own scenarios based on your software design writeup. You
-    //should have a couple from pain points at least, and likely some others
-    //for notable features. This doesn't need to be exhaustive, but this is a
-    //good place to test/showcase your functionality in context.
 
 }

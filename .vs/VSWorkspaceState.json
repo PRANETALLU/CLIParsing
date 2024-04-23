@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.gradle\\8.5\\fileChanges",
+    "\\build",
+    "\\build\\classes",
+    "\\build\\reports",
+    "\\build\\test-results",
+    "\\build\\tmp",
+    "\\gradle",
+    "\\gradle\\wrapper",
+    "\\src"
+  ],
+  "SelectedNode": "\\src",
+  "PreviewInSolutionExplorer": false
+}
